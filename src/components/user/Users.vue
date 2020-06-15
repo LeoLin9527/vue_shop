@@ -303,7 +303,6 @@
       },
       // 监听switch开关状态
       async userStateChanged (userinfo) {
-        console.log(userinfo)
         const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
         if (res.meta.status !== 200) {
           userinfo.mg_state = !userinfo.mg_state
@@ -316,7 +315,7 @@
         this.$refs.addFormRef.resetFields()
       },
       // 点击按钮，添加新用户
-      addUser () {
+      async addUser () {
         this.$refs.addFormRef.validate(async valid => {
           if (!valid) return
           // 可以发起添加用户的网络请求
@@ -333,6 +332,7 @@
           await this.getUserList()
         })
       },
+      // 展示编辑用户的对话框
       async showEditDialog (id) {
         const { data: res } = await this.$http.get('users/' + id)
         if (res.meta.status !== 200) {
@@ -384,6 +384,7 @@
         this.$message.success('删除用户成功!')
         await this.getUserList()
       },
+      // 展示分配角色对话框
       async setRole (userInfo) {
         this.userInfo = userInfo
         // 展示对话框前获取所有的角色列表
@@ -394,6 +395,7 @@
         this.rolesList = res.data
         this.setRoleDialogVisible = true
       },
+      // 点击分配角色对话框确定按钮
       async saveRoleInfo () {
         if (!this.selectRoleId) {
           return this.$message.error('请选择要分配的角色!')
@@ -406,8 +408,10 @@
         await this.getUserList()
         this.setRoleDialogVisible = false
       },
+      // 监听分配角色对话框关闭事件
       setRoleDialogClosed () {
         this.selectRoleId = ''
+        this.userInfo = {}
       }
     }
   }
