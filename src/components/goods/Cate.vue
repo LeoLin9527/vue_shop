@@ -61,7 +61,7 @@
             :props="cascaderProps"
             @change="parentCateChanged"
             clearable
-            props.checkStrictly = true>
+            props.checkStrictly=true>
           </el-cascader>
         </el-form-item>
       </el-form>
